@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Appointment - Healthcare Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { margin: 0; padding: 0; font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #8e2de2, #4a00e0, #ff0080); min-height: 100vh; color: #fff; }
+        header { background: rgba(255, 255, 255, 0.15); backdrop-filter: blur(12px); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid rgba(255,255,255,0.2); font-weight: 700; font-size: 1.5rem; }
+        header i { margin-right: 10px; color: #ffe0f7; }
+        .container { max-width: 800px; margin: 50px auto; background: rgba(255,255,255,0.1); padding: 30px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        h2 { text-align: center; margin-bottom: 30px; }
+        h3 { margin-top: 25px; border-bottom: 1px solid rgba(255,255,255,0.3); padding-bottom: 5px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; margin-top: 15px; }
+        label { font-weight: 600; display: block; margin-bottom: 5px; }
+        select, input { width: 100%; padding: 10px 12px; border-radius: 10px; border: none; font-size: 1rem; }
+        button { margin-top: 25px; width: 100%; padding: 12px; font-size: 1rem; font-weight: 700; color: #fff; background: linear-gradient(135deg, #ff6ec4, #7873f5); border: none; border-radius: 50px; cursor: pointer; transition: all 0.3s ease; }
+        button:hover { transform: scale(1.05); background: linear-gradient(135deg, #7873f5, #ff6ec4); }
+        a.back-link { display: inline-block; margin-top: 20px; color: #fff; text-decoration: none; font-weight: 600; }
+        a.back-link:hover { color: #ffe0f7; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><i class="fas fa-hospital"></i> Healthcare Management System</div>
+    <div><i class="fas fa-user-md"></i> Admin</div>
+</header>
+
+<div class="container">
+    <h2>Book Appointment</h2>
+    <form th:action="@{/addAppointment}" th:object="${appointment}" method="post">
+
+        <!-- Patient Selection -->
+        <h3>Patient Details</h3>
+        <div class="form-grid">
+            <div>
+                <label>Select Patient:</label>
+                <select th:field="*{patientId}" required>
+                    <option value="" disabled selected>Select a patient</option>
+                    <option th:each="patient : ${patients}" th:value="${patient.id}" th:text="${patient.name}"></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Doctor Selection -->
+        <h3>Doctor Details</h3>
+        <div class="form-grid">
+            <div>
+                <label>Select Doctor Specialization:</label>
+                <select th:field="*{doctorId}" required>
+                    <option value="" disabled selected>Select a doctor</option>
+                    <option th:each="doctor : ${doctors}" th:value="${doctor.id}" th:text="${doctor.specialization}"></option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Appointment Date & Time -->
+        <h3>Appointment</h3>
+        <div class="form-grid">
+            <div>
+                <label>Date & Time:</label>
+                <input type="datetime-local" th:field="*{appointmentDateTime}" required />
+            </div>
+        </div>
+
+        <button type="submit">Book Appointment</button>
+    </form>
+
+    <a th:href="@{/appointments}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Appointments</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Patient - Healthcare Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0, #ff0080);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        header i { margin-right: 10px; color: #ffe0f7; }
+
+        .container {
+            max-width: 700px;
+            margin: 100px auto;
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 { margin-bottom: 30px; }
+
+        button, a {
+            margin: 10px;
+            padding: 12px 25px;
+            font-size: 1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            cursor: pointer;
+            border: none;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn { background: #f44336; }
+        .delete-btn:hover { background: #da190b; }
+
+        .cancel-btn { background: #4caf50; }
+        .cancel-btn:hover { background: #45a049; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><i class="fas fa-hospital"></i> Healthcare Management System</div>
+    <div><i class="fas fa-user-md"></i> Admin</div>
+</header>
+
+<div class="container">
+    <h2>Delete Patient</h2>
+    <p>Are you sure you want to delete patient <strong th:text="${patient.name}">Patient Name</strong>?</p>
+
+    <form th:action="@{/deletePatient/{id}(id=${patient.id})}" method="post" style="display:inline;">
+        <button type="submit" class="delete-btn"><i class="fas fa-trash"></i> Delete</button>
+    </form>
+
+    <a th:href="@{/patients}" class="cancel-btn"><i class="fas fa-times"></i> Cancel</a>
+</div>
+
+</body>
+</html>

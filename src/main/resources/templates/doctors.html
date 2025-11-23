@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Doctors - Healthcare Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0, #ff0080);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        header i { margin-right: 10px; color: #ffe0f7; }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 10px 25px;
+            background: linear-gradient(135deg, #ff6ec4, #7873f5);
+            color: #fff;
+            font-weight: 700;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .add-button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #7873f5, #ff6ec4);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        th, td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+
+        th {
+            background: rgba(255,255,255,0.2);
+            font-size: 1.1rem;
+        }
+
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+
+        tr:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        a.action-button {
+            padding: 5px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #fff;
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        a.edit-button { background: #4caf50; }
+        a.edit-button:hover { background: #45a049; }
+
+        a.delete-button { background: #f44336; }
+        a.delete-button:hover { background: #da190b; }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        a.back-link:hover { color: #ffe0f7; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><i class="fas fa-hospital"></i> Healthcare Management System</div>
+    <div><i class="fas fa-user-md"></i> Admin</div>
+</header>
+
+<div class="container">
+    <h2>Doctor Registration Details</h2>
+    <a th:href="@{/addDoctor}" class="add-button"><i class="fas fa-user-plus"></i>Add Doctor</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Specialization</th>
+                <th>Contact Number</th>
+                <th>Email Id</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="doctor : ${doctors}">
+                <td th:text="${doctor.id}"></td>
+                <td th:text="${doctor.name}"></td>
+                <td th:text="${doctor.specialization}"></td>
+                <td th:text="${doctor.contactNumber}"></td>
+                <td th:text="${doctor.emailId}"></td>
+                <td>
+                    <a th:href="@{/editDoctor/{id}(id=${doctor.id})}" class="action-button edit-button">
+                        <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a th:href="@{/deleteDoctor/{id}(id=${doctor.id})}" class="action-button delete-button"
+                       onclick="return confirm('Are you sure you want to delete this doctor?');">
+                        <i class="fas fa-trash"></i> Delete
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+</div>
+
+</body>
+</html>

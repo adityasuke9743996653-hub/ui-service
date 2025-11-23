@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Appointment - Healthcare Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #8e2de2, #4a00e0, #ff0080);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        header i { margin-right: 10px; color: #ffe0f7; }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 30px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            border: none;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #ff6ec4, #7873f5);
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #7873f5, #ff6ec4);
+        }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        a.back-link:hover { color: #ffe0f7; }
+    </style>
+</head>
+<body>
+<header>
+    <div><i class="fas fa-hospital"></i> Healthcare Management System</div>
+    <div><i class="fas fa-user-md"></i> Admin</div>
+</header>
+
+<div class="container">
+    <h2>Edit Appointment</h2>
+
+    <form th:action="@{/editAppointment/{id}(id=${appointment.id})}" th:object="${appointment}" method="post">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <label>Patient:</label>
+        <select th:field="*{patientId}">
+            <option th:each="patient : ${patients}" 
+                    th:value="${patient.id}" 
+                    th:text="${patient.name}" 
+                    th:selected="${patient.id == appointment.patientId}"></option>
+        </select>
+
+        <label>Doctor:</label>
+        <select th:field="*{doctorId}">
+            <option th:each="doctor : ${doctors}" 
+                    th:value="${doctor.id}" 
+                    th:text="${doctor.name}" 
+                    th:selected="${doctor.id == appointment.doctorId}"></option>
+        </select>
+
+        <label>Date & Time:</label>
+        <input type="datetime-local" th:field="*{appointmentDateTime}" 
+               th:value="${#temporals.format(appointment.appointmentDateTime,'yyyy-MM-dd''T''HH:mm')}" />
+
+        <button type="submit">Update Appointment</button>
+    </form>
+
+    <a th:href="@{/appointments}" class="back-link"><i class="fas fa-arrow-left"></i> Back to Appointments</a>
+</div>
+
+</body>
+</html>

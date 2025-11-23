@@ -1,0 +1,56 @@
+server:
+  port: 8084
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            client-id: ui-service
+            client-secret: 6YqvlxvoaCfC5NSQBTIwecsyXHVcrUaU
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8084/login/oauth2/code/keycloak
+            scope: openid, profile, email
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:8080/realms/hms-realm
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/hms-realm
+    
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: adityasuke.123@gmail.com
+    password: zavbrzgxuxlteriq
+    protocol: smtp
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+  application:
+    name: UI-SERVICE
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+  appointment-service:
+    url: http://localhost:8083
+
+  patient-service:
+    url: http://localhost:8081
+
+  doctor-service:
+    url: http://localhost:8082
+    
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    healthcheck:
+      enabled: true

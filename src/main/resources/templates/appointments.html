@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Appointments - Healthcare Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            color: #fff;
+        }
+
+        header {
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(8px);
+            font-weight: 700;
+            font-size: 1.4rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .add-button {
+            display: inline-block;
+            margin-bottom: 15px;
+            padding: 8px 20px;
+            background: #ff6ec4;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            color: #fff;
+            transition: 0.3s;
+        }
+        .add-button:hover { background: #7873f5; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            table-layout: fixed;
+        }
+
+        th, td {
+            padding: 6px 8px;
+            font-size: 0.85rem;
+            text-align: center;
+            word-wrap: break-word;
+            vertical-align: middle;
+        }
+
+        th {
+            background: rgba(255,255,255,0.2);
+        }
+
+        tr:nth-child(even) { background: rgba(255,255,255,0.05); }
+        tr:hover { background: rgba(255,255,255,0.15); }
+
+        /* Narrow ID column */
+        th:nth-child(1), td:nth-child(1) {
+            width: 50px;
+        }
+
+        /* Info columns */
+        .info-column {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .info-column strong { font-size: 0.9rem; }
+
+        /* Actions column */
+        .actions-cell {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        a.action-btn, button.action-btn {
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+
+        a.edit { background: #4caf50; }
+        a.edit:hover { background: #45a049; }
+
+        a.delete { background: #f44336; }
+        a.delete:hover { background: #da190b; }
+
+        a.download { background: #00bcd4; }
+        a.download:hover { background: #0097a7; }
+
+        button.email { background: #ff9800; }
+        button.email:hover { background: #fb8c00; }
+
+        input.email-input {
+            padding: 3px 5px;
+            border-radius: 3px;
+            border: none;
+            font-size: 0.75rem;
+            width: 100px; /* small width */
+        }
+
+        .email-form { display: flex; gap: 4px; flex-wrap: nowrap; }
+
+        a.back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }
+        a.back-link:hover { color: #ffe0f7; }
+
+        @media (max-width: 1024px) {
+            th, td { font-size: 0.75rem; padding: 5px 6px; }
+            a.action-btn, button.action-btn { flex: 1 0 45%; }
+            input.email-input { width: 80px; }
+        }
+
+        @media (max-width: 768px) {
+            a.action-btn, button.action-btn { flex: 1 0 100%; }
+            .email-form { flex-direction: column; gap: 4px; }
+            input.email-input { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div><i class="fas fa-hospital"></i> Healthcare Management</div>
+    <div><i class="fas fa-user-md"></i> Admin</div>
+</header>
+
+<div class="container">
+    <h2>Appointments</h2>
+    <a th:href="@{/addAppointment}" class="add-button"><i class="fas fa-user-plus"></i> Add Appointment</a>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Patient Name</th>
+                <th>Patient Contact</th>
+                <th>Doctor Name</th>
+                <th>Specialization</th>
+                <th>Doctor Contact</th>
+                <th>Date & Time</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.id}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.patientContactNumber}"></td>
+                <td th:text="${appointment.doctorName}"></td>
+                <td th:text="${appointment.doctorSpecialization}"></td>
+                <td th:text="${appointment.doctorContactNumber}"></td>
+                <td th:text="${#temporals.format(appointment.appointmentDateTime,'yyyy-MM-dd HH:mm')}"></td>
+
+                <!-- Properly structured Actions -->
+                <td class="actions-cell">
+                    <!-- Edit/Delete -->
+                    <div class="btn-group">
+                        <a th:href="@{/editAppointment/{id}(id=${appointment.id})}" class="action-btn edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a th:href="@{/deleteAppointment/{id}(id=${appointment.id})}" class="action-btn delete"
+                           onclick="return confirm('Delete this appointment?');">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </div>
+
+                    <!-- Downloads -->
+                    <div class="btn-group">
+                        <a th:href="@{'/ui/appointments/' + ${appointment.id} + '/excel'}" class="action-btn download">
+                            <i class="fas fa-file-excel"></i>
+                        </a>
+                        <a th:href="@{'/ui/appointments/' + ${appointment.id} + '/pdf'}" class="action-btn download">
+                            <i class="fas fa-file-pdf"></i>
+                        </a>
+                    </div>
+
+                    <!-- Emails -->
+                    <div class="btn-group">
+                        <form th:action="@{'/ui/appointments/' + ${appointment.id} + '/send-email'}" method="get" class="email-form">
+                            <input type="hidden" name="type" value="pdf"/>
+                            <input type="email" placeholder="Email" required class="email-input" name="email"/>
+                            <button type="submit" class="action-btn email"><i class="fas fa-envelope"></i></button>
+                        </form>
+                        <form th:action="@{'/ui/appointments/' + ${appointment.id} + '/send-email'}" method="get" class="email-form">
+                            <input type="hidden" name="type" value="excel"/>
+                            <input type="email" placeholder="Email" required class="email-input" name="email"/>
+                            <button type="submit" class="action-btn email"><i class="fas fa-envelope"></i></button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/}" class="back-link"><i class="fas fa-arrow-left"></i> Back</a>
+</div>
+
+</body>
+</html>
